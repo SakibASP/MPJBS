@@ -1,3 +1,4 @@
+using FastReport.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MPJBS.Data;
@@ -38,6 +39,10 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddDistributedMemoryCache();
 
+//Fast Reports
+FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
+builder.Services.AddFastReport();
+
 var app = builder.Build();
 
 
@@ -76,6 +81,9 @@ else
 
 //enable session before MVC
 app.UseSession();
+
+//Fast Reports
+app.UseFastReport();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
