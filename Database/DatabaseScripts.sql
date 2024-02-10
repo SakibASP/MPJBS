@@ -15,6 +15,8 @@ SET IDENTITY_INSERT [MenuItem] OFF
 SET IDENTITY_INSERT [MenuItem] ON
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (103,N'Collection',N'/Collections/Index',2,1)
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (104,N'Expense',N'/Expenses/Index',2,1)
+INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (105,N'Works',N'/WorkHistory/Index',2,1)
+INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (106,N'Images',N'/WorkImage/Index',2,1)
 SET IDENTITY_INSERT [MenuItem] OFF
 
 SET IDENTITY_INSERT [MenuItem] ON
@@ -64,10 +66,12 @@ end
 
 GO
 
+DROP TABLE IF EXISTS [WorkHistory]
 CREATE TABLE [WorkHistory](
 [Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 [Title] [nvarchar] (256) NOT NULL,
 [WorkCode] [nvarchar] (128) NOT NULL,
+[Mentions] [nvarchar] (MAX) NOT NULL,
 [Details] [nvarchar] (MAX) NOT NULL,
 [CreatedBy] [nvarchar](128) NULL,
 [CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
@@ -82,7 +86,8 @@ CREATE TABLE [WorkImage](
 [Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 [WorkId] [int] NOT NULL REFERENCES WorkHistory(Id),
 [IsCover] [bit] NULL,
-[ImagePath] [nvarchar](256) NOT NULL,
+[ImagePath] [nvarchar](MAX) NOT NULL,
+[ImageName] [nvarchar](256) NOT NULL,
 [CreatedBy] [nvarchar](128) NULL,
 [CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
 [ModifiedBy] [nvarchar](128) NULL,

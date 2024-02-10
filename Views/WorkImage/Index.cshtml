@@ -1,0 +1,50 @@
+﻿@model List<MPJBS.Models.WorkImage>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Is Cover</th>
+            <th>Code</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => item.WorkHistory_.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.ImageName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.ImagePath)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.IsCover)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.WorkHistory_.WorkCode)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
