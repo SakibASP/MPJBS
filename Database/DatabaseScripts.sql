@@ -61,3 +61,30 @@ begin
 	inner join AspNetRoles r on r.Id =rm.RoleId				
 	where rm.Active=1	-- add more active condition if required	
 end
+
+GO
+
+CREATE TABLE [WorkHistory](
+[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+[Title] [nvarchar] (256) NOT NULL,
+[WorkCode] [nvarchar] (128) NOT NULL,
+[Details] [nvarchar] (MAX) NOT NULL,
+[CreatedBy] [nvarchar](128) NULL,
+[CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
+[ModifiedBy] [nvarchar](128) NULL,
+[ModifiedDate] [datetime] NULL
+)
+
+GO
+
+DROP TABLE IF EXISTS [WorkImage]
+CREATE TABLE [WorkImage](
+[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+[WorkId] [int] NOT NULL REFERENCES WorkHistory(Id),
+[IsCover] [bit] NULL,
+[ImagePath] [nvarchar](256) NOT NULL,
+[CreatedBy] [nvarchar](128) NULL,
+[CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
+[ModifiedBy] [nvarchar](128) NULL,
+[ModifiedDate] [datetime] NULL
+)

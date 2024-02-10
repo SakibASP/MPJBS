@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-MPJBS-c84a3598-5d24-401e-9642-d1fcf2aa46fb</UserSecretsId>
+    <UserSecretsId>aspnet-MPJBS-e8ec8c89-e532-4cbb-ab4f-1158ffad037e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,12 +19,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\FastReports\" />
-    <Folder Include="wwwroot\RDL_Reports\" />
   </ItemGroup>
 
 </Project>

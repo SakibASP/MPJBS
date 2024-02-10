@@ -38,6 +38,8 @@ namespace MPJBS.Data
         public virtual DbSet<MemberTypes> MemberTypes { get; set; }
         public virtual DbSet<Collection> Collection { get; set; }
         public virtual DbSet<Expense> Expense { get; set; }
+        public virtual DbSet<WorkHistory> WorkHistory { get; set; }
+        public virtual DbSet<WorkImage> WorkImage { get; set; }
         public virtual DbSet<MenuItem> MenuItem { get; set; }
         public virtual DbSet<MenuToRole> MenuToRole { get; set; }
 
