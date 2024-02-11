@@ -108,11 +108,16 @@ namespace MPJBS.Controllers
         {
             try
             {
-                var model = _context.WorkImage.Find(id);
+                var model = await _context.WorkImage.FindAsync(id);
                 if (model == null)
                 {
                     return NotFound();
                 }
+
+                // Check if the file exists before attempting to delete it
+                if (System.IO.File.Exists(model.ImagePath))                 
+                    System.IO.File.Delete(model.ImagePath);
+
                 _context.WorkImage.Remove(model);
                 await _context.SaveChangesAsync();
                 TempData[Constants.Success] = Constants.SuccessRemovedMessage;
@@ -120,6 +125,7 @@ namespace MPJBS.Controllers
             }
             catch
             {
+                TempData[Constants.Error] = Constants.ErrorMessage;
                 return View();
             }
         }

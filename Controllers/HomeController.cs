@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MPJBS.Data;
 using MPJBS.Models;
+using MPJBS.ViewModels;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -17,9 +19,19 @@ namespace MPJBS.Controllers
             _logger = logger;
             _context = context;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await (from m in _context.WorkImage
+                         join f in _context.WorkHistory on m.WorkId equals f.Id
+                         select new WorkViewModel
+                         {
+                             Title= f.Title,
+                             Details = f.Details,
+                             Mentions = f.Mentions,
+                             ImageName = m.ImageName
+                         }).ToListAsync();
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -28,6 +40,7 @@ namespace MPJBS.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<JsonResult> GetMemberInfo(int? memberId)
         {
             var member = await _context.Members.FindAsync(memberId);
@@ -36,6 +49,20 @@ namespace MPJBS.Controllers
                 return Json(null);
             }
             return Json(member, new JsonSerializerOptions());
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetIncomeExpense()
+        {
+            var income = await _context.Collection.SumAsync(x => x.PaidAmount);
+            var expense = await _context.Expense.SumAsync(x => x.Amount);
+            Dictionary<string, double?> incomeExpense = new()
+            {
+                { "Income", income },
+                { "Expense", expense }
+            };
+            if (incomeExpense is null) return Json(null);
+            return Json(incomeExpense);
         }
 
         public async Task<IActionResult> Members()

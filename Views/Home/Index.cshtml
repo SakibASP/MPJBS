@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<MPJBS.ViewModels.WorkViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,32 +14,72 @@
     </div>
 </div>
 <br />
+
 <div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <a href="@Url.Action("Members","Home")" id="customA">
-                <div class="card-body">
-                    <h6>সদস্যের তথ্য</h6>
-                </div>
-            </a>
+    <div class="col-3">
+        <div class="row">
+            <div class="card">
+                <a href="@Url.Action("Members","Home")" id="customA">
+                    <div class="card-body">
+                        <h6>সদস্যের তথ্য</h6>
+                    </div>
+                </a>
+            </div>
+            <div class="card">
+                <a href="@Url.Action("Collection","Home")" id="customA">
+                    <div class="card-body">
+                        <h6>জমার বিবরণ</h6>
+                    </div>
+                </a>
+            </div>
+            <div class="card">
+                <a href="@Url.Action("Expense","Home")" id="customA">
+                    <div class="card-body">
+                        <h6>খরচের বিবরণ</h6>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card">
-            <a href="@Url.Action("Collection","Home")" id="customA">
-                <div class="card-body">
-                    <h6>জমার বিবরণ</h6>
+    <div class="col-6">
+        @foreach (var item in Model)
+        {
+            <div class="row" id="customDiv">
+                <div class="card">
+                    <img style="border-radius: 2px;" class="img-thumbnail" src="~/WorkImages/@item.ImageName" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Details</p>
+                    </div>
+                    <div class="card-footer">উপস্থিতি : @item.Mentions</div>
                 </div>
-            </a>
-        </div>
+            </div>
+        }
     </div>
-    <div class="col-md-4">
-       <div class="card">
-            <a href="@Url.Action("Expense","Home")" id="customA">
-                <div class="card-body">
-                    <h6>খরচের বিবরণ</h6>
-                </div>
-            </a>
-       </div>
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <h6>মোট জমা : <span id="idTotalCollection"></span></h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h6>মোট খরচ : <span id="idTotalExpense"></span></h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h6>ব্যালেঞ্চ : <span id="idBalance"></span></h6>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/managers/home/home.js"></script>
+}
+

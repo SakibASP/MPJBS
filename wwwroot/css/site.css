@@ -26,11 +26,20 @@ body {
     color: black;
 }
 
-    #customA:hover{
-        color: white;
-        background-color: black;
-    }
+#customA:hover{
+    color: white;
+    background-color: black;
+}
 
-    .card {
-        border-radius: 15px;
-    }
+.card {
+    border-radius: 15px;
+    margin: 2px;
+}
+
+#customDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 0px;
+}
