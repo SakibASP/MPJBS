@@ -2,9 +2,11 @@
 let payableAmount = document.getElementById("PayableAmount");
 let paidAmount = document.getElementById("PaidAmount");
 
-members.addEventListener("change", function (e) {
-    AmountCalculation(members.value);
-})
+if (members != null) {
+    members.addEventListener("change", function (e) {
+        AmountCalculation(members.value);
+    });
+}
 
 const AmountCalculation = function (memberId) {
     $.ajax({
@@ -22,3 +24,4 @@ const AmountCalculation = function (memberId) {
         }
     });
 }
+

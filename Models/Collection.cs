@@ -14,7 +14,8 @@ namespace MPJBS.Models
         [Required]
         [DisplayName("জমার তারিখ")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MMMM-yyyy}")]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? CollectionDate { get; set; }
         [Required]
         [DisplayName("চাঁদার পরিমাণ")]

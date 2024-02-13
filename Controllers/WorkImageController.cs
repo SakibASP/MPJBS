@@ -57,9 +57,11 @@ namespace MPJBS.Controllers
 
                     var imageName = Guid.NewGuid().ToString() + "_" + workImage.ImageName + Path.GetExtension(img.FileName);
                     var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, folderName, imageName);
-                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    
+                    //saving resized image
+                    var _path = Utility.SaveImage(img, uploadPath);
+                    if(_path is not null)
                     {
-                        await img.CopyToAsync(stream);
                         workImage.CreatedBy = User.Identity?.Name;
                         workImage.ImagePath = uploadPath;
                         workImage.ImageName = imageName;
@@ -67,6 +69,18 @@ namespace MPJBS.Controllers
                         await _context.SaveChangesAsync();
                         TempData[Constants.Success] = Constants.SuccessMessage;
                     }
+
+                    //saving raw image
+                    //using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    //{
+                    //    await img.CopyToAsync(stream);
+                    //    workImage.CreatedBy = User.Identity?.Name;
+                    //    workImage.ImagePath = uploadPath;
+                    //    workImage.ImageName = imageName;
+                    //    _context.WorkImage.Add(workImage);
+                    //    await _context.SaveChangesAsync();
+                    //    TempData[Constants.Success] = Constants.SuccessMessage;
+                    //}
                 }
                 else
                 {

@@ -33,3 +33,10 @@ const GetIncomeExpense = async function () {
         console.error('There was a problem with the fetch operation:', error);
     }
 }
+
+//// Get the screen width and height
+//var screenWidth = window.innerWidth;
+//var screenHeight = window.innerHeight;
+
+//// Alert the screen size
+//alert("Screen Width: " + screenWidth + ", Screen Height: " + screenHeight);
