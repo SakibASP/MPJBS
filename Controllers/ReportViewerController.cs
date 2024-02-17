@@ -1,10 +1,11 @@
 ﻿using BoldReports.Web.ReportViewer;
 using Microsoft.AspNetCore.Mvc;
+using MPJBS.Common;
 
 namespace MPJBS.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class ReportViewerController : Controller, IReportController
+    public class ReportViewerController : BaseController, IReportController
     {
         Dictionary<string, object> jsonArray = null;
         // Report Viewer requires a memory cache to store the information of consecutive client requests 

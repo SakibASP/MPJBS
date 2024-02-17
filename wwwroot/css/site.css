@@ -60,3 +60,13 @@ body {
     background-color: black !important;
     color: white !important;
 }
+
+#blueCard {
+    background-color: darkblue !important;
+    color: white !important;
+}
+
+#greenCard {
+    background-color: forestgreen !important;
+    color: white !important;
+}

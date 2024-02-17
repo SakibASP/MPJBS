@@ -9,7 +9,7 @@ using System.Security.AccessControl;
 
 namespace MPJBS.Controllers
 {
-    public class WorkImageController : Controller
+    public class WorkImageController : BaseController
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -28,19 +28,6 @@ namespace MPJBS.Controllers
             var model = await _context.WorkImage.Include(x=>x.WorkHistory_).ToListAsync();
             return View(model);
         }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-            var images = await _context.WorkImage.Where(x=>x.WorkId == id).ToListAsync();
-            var workHistory = await _context.WorkHistory.FindAsync(id);
-            ViewData["Images"] = images;
-            return View(workHistory);
-        }
-
 
         // GET: WorkImageController/Create
         public IActionResult Create()
@@ -171,6 +158,7 @@ namespace MPJBS.Controllers
                 }
                 _context.Update(workImage);
                 await _context.SaveChangesAsync();
+                TempData[Constants.Success] = Constants.SuccessMessage;
                 return RedirectToAction(nameof(Index));
             }
             catch

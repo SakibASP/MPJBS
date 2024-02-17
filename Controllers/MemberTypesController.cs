@@ -11,7 +11,7 @@ using MPJBS.Models;
 
 namespace MPJBS.Controllers
 {
-    public class MemberTypesController : Controller
+    public class MemberTypesController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

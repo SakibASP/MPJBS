@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var Payments = ViewData["Payments"] as List<PaymentMethod>;
 }
 
 <div class="text-center">
@@ -16,33 +17,50 @@
 <div class="row">
     <div class="col-md-3">
         <div class="row">
-            <div class="col-md-12 col-4 text-center">
-                <div class="card" id="blackCard">
+            <div class="col-md-12 col-6 text-center">
+                <div class="card" id="blueCard">
                     <a href="@Url.Action("Members","Home")" id="customA">
                         <div class="card-body">
                             <h6>সদস্যের তথ্য</h6>
                         </div>
                     </a>
                 </div>
-            </div>
-            <div class="col-md-12 col-4 text-center">
-                <div class="card" id="blackCard">
+                <div class="card" id="blueCard">
                     <a href="@Url.Action("Collection","Home")" id="customA">
                         <div class="card-body">
                             <h6>জমার বিবরণ</h6>
                         </div>
                     </a>
                 </div>
-            </div>
-            <div class="col-md-12 col-4 text-center">
-                <div class="card" id="blackCard">
+
+                <div class="card" id="blueCard">
                     <a href="@Url.Action("Expense","Home")" id="customA">
                         <div class="card-body">
                             <h6>খরচের বিবরণ</h6>
                         </div>
                     </a>
                 </div>
-           </div>
+            </div>
+
+            <div class="col-md-12 col-6 text-center">
+                <div class="card" id="blackCard">
+                    <div class="card-body">
+                        <h6>মোট জমা : <span id="idTotalCollection"></span></h6>
+                    </div>
+                </div>
+
+                <div class="card" id="blackCard">
+                    <div class="card-body">
+                        <h6>মোট খরচ : <span id="idTotalExpense"></span></h6>
+                    </div>
+                </div>
+
+                <div class="card" id="blackCard">
+                    <div class="card-body">
+                        <h6>ব্যালেঞ্চ : <span id="idBalance"></span></h6>
+                    </div>
+                </div>
+            </div>
         </div>
         
     </div>
@@ -56,7 +74,7 @@
                     <div class="card-body">
                         <h5 class="card-title" style="font-weight: bold;">@item.Title</h5>
                         <p class="card-text">@item.Details</p>
-                        <a href="@Url.Action("Details","WorkImage",new { id = item.WorkId })" class="btn btn-info" style="float: right;">Details</a>
+                        <a href="@Url.Action("WorkDetails","Home",new { id = item.WorkId })" style="float: right;">Details</a>
                     </div>
                     <div class="card-footer">উপস্থিতি : @item.Mentions</div>
                 </div>
@@ -65,27 +83,20 @@
     </div>
     <div class="col-md-3">
         <div class="row">
-            <div class="col-md-12 col-6 text-center">
-                <div class="card" id="blackCard">
-                    <div class="card-body">
-                        <h6>মোট জমা : <span id="idTotalCollection"></span></h6>
+            @if (Payments?.Count > 0)
+            {
+                @foreach (var item in Payments)
+                {
+                    <div class="col-md-12 col-6 text-center">
+                        <div class="card" id="greenCard">
+                            <div class="card-body">
+                                <h6>@item.MethodName</h6>
+                            </div>
+                            <div class="card-footer">@item.MethodNo</div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-12 col-6 text-center">
-                <div class="card" id="blackCard">
-                    <div class="card-body">
-                        <h6>মোট খরচ : <span id="idTotalExpense"></span></h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 text-center">
-                <div class="card" id="blackCard">
-                    <div class="card-body">
-                        <h6>ব্যালেঞ্চ : <span id="idBalance"></span></h6>
-                    </div>
-                </div>
-            </div>
+                }
+            }
         </div>
     </div>
 </div>

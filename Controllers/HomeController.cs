@@ -64,7 +64,22 @@ namespace MPJBS.Controllers
                              Mentions = f.Mentions,
                              ImageName = m.ImageName
                          }).ToListAsync();
+            ViewData["Payments"] = await _context.PaymentMethod.ToListAsync();
+
             return View(model);
+        }
+
+        //For All visitors
+        public async Task<IActionResult> WorkDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var images = await _context.WorkImage.Where(x => x.WorkId == id).ToListAsync();
+            var workHistory = await _context.WorkHistory.FindAsync(id);
+            ViewData["Images"] = images;
+            return View(workHistory);
         }
 
         public IActionResult Privacy()
@@ -84,6 +99,7 @@ namespace MPJBS.Controllers
             return Json(member, new JsonSerializerOptions());
         }
 
+        //For All visitors
         [HttpGet]
         public async Task<JsonResult> GetIncomeExpense()
         {
@@ -98,18 +114,21 @@ namespace MPJBS.Controllers
             return Json(incomeExpense);
         }
 
+        //For All visitors
         public async Task<IActionResult> Members()
         {
             var members = await _context.Members.Include(x=>x.MemberTypes).ToListAsync();
             return View(members);
         }
 
+        //For All visitors
         public async Task<IActionResult> Collection()
         {
             var collection = await _context.Collection.Include(x=>x.Members).ToListAsync();
             return View(collection);
         }
 
+        //For All visitors
         public async Task<IActionResult> Expense()
         {
             var expenses = await _context.Expense.Include(x => x.Members).ToListAsync();

@@ -7,7 +7,7 @@ using MPJBS.Models;
 
 namespace MPJBS.Controllers
 {
-    public class WorkHistoryController : Controller
+    public class WorkHistoryController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

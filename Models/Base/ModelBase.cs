@@ -6,7 +6,8 @@ namespace MPJBS.Models.Base
     public class ModelBase
     {
         // Specify the time zone for Bangladesh
-        private static TimeZoneInfo bdTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Bangladesh Standard Time");
+        private static readonly TimeZoneInfo bdTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Bangladesh Standard Time");
+        private DateTime? _modifiedDate;
 
         [Key]
         [Required]
@@ -17,6 +18,8 @@ namespace MPJBS.Models.Base
         [Required]
         public DateTime CreatedDate { get; set; } = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, bdTimeZone);
         public string? ModifiedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime? ModifiedDate {
+            get => _modifiedDate;
+            set => _modifiedDate = value.HasValue ? TimeZoneInfo.ConvertTime((DateTime)value, TimeZoneInfo.Local, bdTimeZone) : null; }
     }
 }

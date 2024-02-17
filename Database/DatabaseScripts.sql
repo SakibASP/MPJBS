@@ -10,13 +10,11 @@ SET IDENTITY_INSERT [MenuItem] OFF
 SET IDENTITY_INSERT [MenuItem] ON
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (101,N'Members',N'/Members/Index',1,1)
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (102,N'Types',N'/MemberTypes/Index',1,1)
-SET IDENTITY_INSERT [MenuItem] OFF
-
-SET IDENTITY_INSERT [MenuItem] ON
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (103,N'Collection',N'/Collections/Index',2,1)
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (104,N'Expense',N'/Expenses/Index',2,1)
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (105,N'Works',N'/WorkHistory/Index',2,1)
 INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (106,N'Images',N'/WorkImage/Index',2,1)
+INSERT INTO MenuItem([MenuId],[MenuName],[MenuUrl],[MenuParentId],[Active]) VALUES (107,N'Payment Methods',N'/PaymentMethod/Index',1,1)
 SET IDENTITY_INSERT [MenuItem] OFF
 
 SET IDENTITY_INSERT [MenuItem] ON
@@ -81,13 +79,24 @@ CREATE TABLE [WorkHistory](
 
 GO
 
-DROP TABLE IF EXISTS [WorkImage]
 CREATE TABLE [WorkImage](
 [Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 [WorkId] [int] NOT NULL REFERENCES WorkHistory(Id),
 [IsCover] [bit] NULL,
 [ImagePath] [nvarchar](MAX) NOT NULL,
 [ImageName] [nvarchar](256) NOT NULL,
+[CreatedBy] [nvarchar](128) NULL,
+[CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
+[ModifiedBy] [nvarchar](128) NULL,
+[ModifiedDate] [datetime] NULL
+)
+
+GO
+
+CREATE TABLE [PaymentMethod](
+[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+[MethodName] [nvarchar](128) NOT NULL,
+[MethodNo] [nvarchar](20) NOT NULL,
 [CreatedBy] [nvarchar](128) NULL,
 [CreatedDate] [datetime] NOT NULL DEFAULT(GETDATE()),
 [ModifiedBy] [nvarchar](128) NULL,
