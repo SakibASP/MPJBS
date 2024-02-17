@@ -23,12 +23,12 @@ body {
 
 #customA {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 #customA:hover{
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
 }
 
 .card {
@@ -54,4 +54,9 @@ body {
     align-items: center;
     padding: 10px;
     margin: 0px;
+}
+
+#blackCard {
+    background-color: black !important;
+    color: white !important;
 }

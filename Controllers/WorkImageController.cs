@@ -29,11 +29,24 @@ namespace MPJBS.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var images = await _context.WorkImage.Where(x=>x.WorkId == id).ToListAsync();
+            var workHistory = await _context.WorkHistory.FindAsync(id);
+            ViewData["Images"] = images;
+            return View(workHistory);
+        }
+
 
         // GET: WorkImageController/Create
         public IActionResult Create()
         {
             ViewData["WorkId"] = new SelectList(_context.WorkHistory, "Id", "WorkCode");
+            ViewData["IsCover"] = new SelectList(StaticDropdowns.YesNoList(), "Value", "Text");
             return View();
         }
 
@@ -65,6 +78,20 @@ namespace MPJBS.Controllers
                         workImage.CreatedBy = User.Identity?.Name;
                         workImage.ImagePath = uploadPath;
                         workImage.ImageName = imageName;
+                        workImage.IsCover = Convert.ToBoolean(workImage.IsCover);
+                        if(Convert.ToBoolean(workImage.IsCover))
+                        {
+                            var images = _context.WorkImage.Where(x=>x.WorkId == workImage.WorkId && x.IsCover);
+                            if (images.Any())
+                            {
+                                foreach (var image in images)
+                                {
+                                    image.IsCover = false;
+                                }
+                                _context.UpdateRange(images);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
                         _context.WorkImage.Add(workImage);
                         await _context.SaveChangesAsync();
                         TempData[Constants.Success] = Constants.SuccessMessage;
@@ -91,30 +118,68 @@ namespace MPJBS.Controllers
             catch(Exception ex)
             {
                 Console.Write(ex.ToString());
-                TempData[Constants.Error] = Constants.ErrorMessage;
-                return View();
+                TempData[Constants.Error] = Constants.ErrorMessage;           
             }
+            ViewData["WorkId"] = new SelectList(_context.WorkHistory, "Id", "WorkCode", workImage.WorkId);
+            ViewData["IsCover"] = new SelectList(StaticDropdowns.YesNoList(), "Value", "Text", workImage.IsCover);
+            return View(workImage);
         }
 
         // GET: WorkImageController/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var workImage = await _context.WorkImage.FindAsync(id);
+            if (workImage == null)
+            {
+                return NotFound();
+            }
+            ViewData["WorkId"] = new SelectList(_context.WorkHistory, "Id", "WorkCode", workImage.WorkId);
+            ViewData["IsCover"] = new SelectList(StaticDropdowns.YesNoList(), "Value", "Text", workImage.IsCover);
+            return View(workImage);
         }
 
         // POST: WorkImageController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, WorkImage workImage)
+        public async Task<IActionResult> Edit(int? id, WorkImage workImage)
         {
+            if (id != workImage.Id)
+            {
+                return NotFound();
+            }
             try
             {
+                workImage.ModifiedBy = User.Identity?.Name;
+                workImage.ModifiedDate = DateTime.Now;
+                if (Convert.ToBoolean(workImage.IsCover))
+                {
+                    var images = _context.WorkImage.Where(x => x.WorkId == workImage.WorkId && x.IsCover);
+                    if (images.Any())
+                    {
+                        foreach (var image in images)
+                        {
+                            image.IsCover = false;
+                        }
+                        _context.UpdateRange(images);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                _context.Update(workImage);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                TempData[Constants.Error] = Constants.ErrorMessage;
             }
+            ViewData["WorkId"] = new SelectList(_context.WorkHistory, "Id", "WorkCode", workImage.WorkId);
+            ViewData["IsCover"] = new SelectList(StaticDropdowns.YesNoList(), "Value", "Text", workImage.IsCover);
+            return View();
         }
 
         // POST: WorkImageController/Delete/5

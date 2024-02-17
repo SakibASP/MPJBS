@@ -39,6 +39,7 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddHttpClient();
 //Fast Reports
 FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 builder.Services.AddFastReport();

@@ -13,19 +13,52 @@ namespace MPJBS.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
-            var model = await (from m in _context.WorkImage
+            //// Get client's IP address Ex:  "203.188.241.51"; 
+            //var ipAddress = _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress;
+
+            //// Make request to ip-api.com API
+            //var client = _httpClientFactory.CreateClient();
+            //var response = await client.GetAsync($"http://ip-api.com/json/{ipAddress}?fields=city,country,lat,lon");
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    // Parse JSON response
+            //    var content = await response.Content.ReadAsStringAsync();
+            //    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(content)!;
+
+            //    if (result != null)
+            //    {
+            //        // Extract location information
+            //        var city = result.city;
+            //        var country = result.country;
+            //        var latitude = result.lat;
+            //        var longitude = result.lon;
+            //    }
+            //}
+            //else
+            //{
+            //    // Handle error
+            //    //return StatusCode((int)response.StatusCode);
+            //}
+
+            var model = await (from m in _context.WorkImage.Where(x=>x.IsCover)
                          join f in _context.WorkHistory on m.WorkId equals f.Id
                          select new WorkViewModel
                          {
+                             WorkId = f.Id,
                              Title= f.Title,
                              Details = f.Details,
                              Mentions = f.Mentions,
