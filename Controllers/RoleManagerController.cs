@@ -21,16 +21,30 @@ namespace MPJBS.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            List<IdentityRole> roles = new();
+            if (IsSuperAdmin)
+            {
+                roles = await _roleManager.Roles.ToListAsync();
+            }
+            else
+            {
+                roles = await _roleManager.Roles.Where(x => x.Name!.ToLower() != "superadmin").ToListAsync();
+            }
             return View(roles);
         }
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
         {
             if (roleName != null)
-            {
+            {  
                 try
                 {
+                    if (roleName.Equals("SuperAdmin", StringComparison.CurrentCultureIgnoreCase) && !IsSuperAdmin)
+                    {
+                        TempData["Error"] = "Sorry! This role already exists.";
+                        return RedirectToAction("Index");
+                    }
+
                     var roleName_ = _context.Roles.Where(r => r.Name == roleName).Count();
                     if (roleName_ == 0)
                     {

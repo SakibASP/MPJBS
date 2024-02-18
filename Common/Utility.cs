@@ -77,17 +77,12 @@ namespace MPJBS.Common
 
         private static IImageEncoder GetEncoder(string extension)
         {
-            switch (extension.ToLower())
+            return extension.ToLower() switch
             {
-                case ".jpg":
-                case ".jpeg":
-                    return new JpegEncoder();
-                case ".png":
-                    return new PngEncoder();
-                default:
-                    // Default to PNG if the file extension is not recognized
-                    return new PngEncoder();
-            }
+                ".jpg" or ".jpeg" => new JpegEncoder(),
+                ".png" => new PngEncoder(),
+                _ => new PngEncoder(),// Default to PNG if the file extension is not recognized
+            };
         }
     }
 }

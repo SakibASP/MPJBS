@@ -20,8 +20,18 @@ namespace MPJBS.Controllers
         }
         public IActionResult Index()
         {
-            var rolelist = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>
-            new SelectListItem { Value = rr.Id.ToString(), Text = rr.Name }).ToList();
+            List<SelectListItem> rolelist = new();
+            if (IsSuperAdmin)
+            {
+                rolelist =  _context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>
+                new SelectListItem { Value = rr.Id.ToString(), Text = rr.Name }).ToList();
+            }
+            else
+            {
+                rolelist = _context.Roles.Where(x=>x.Name!.ToLower() != "superadmin").OrderBy(r => r.Name).ToList().Select(rr =>
+                new SelectListItem { Value = rr.Id.ToString(), Text = rr.Name }).ToList();
+            }
+
             ViewBag.Roles = rolelist;
 
             //List<DynamicMenuItem> MenuList = context.Database.SqlQuery<DynamicMenuItem>("exec usp_GetAllMenuData").ToList();

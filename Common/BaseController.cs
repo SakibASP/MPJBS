@@ -10,6 +10,7 @@ namespace MPJBS.Common
     public class BaseController : Controller
     {
         public int? MemberId { get; set; }
+        public bool IsSuperAdmin { get; set; }
         public string? UserId { get; set; }
         private readonly ApplicationDbContext _context = new();
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -20,6 +21,7 @@ namespace MPJBS.Common
                 var CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 UserId = CurrentUserId;
                 MemberId = _context.Users.Find(CurrentUserId)?.MemberId;
+                IsSuperAdmin = User.IsInRole("SuperAdmin");
             }
         }
     }

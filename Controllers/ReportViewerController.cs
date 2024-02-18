@@ -38,14 +38,15 @@ namespace MPJBS.Controllers
         {
             string basePath = _hostingEnvironment.WebRootPath;
             // Here, we have loaded the TransactionHistory.rdl report from the application folder wwwroot\Resources. The TransactionHistory.rdl file should be in the wwwroot\Resources application folder.
-            FileStream inputStream = new FileStream(basePath
+            FileStream inputStream = new(basePath
             + "\\RDL_Reports\\" + reportOption.ReportModel.ReportPath,
             FileMode.Open, FileAccess.Read);
-            MemoryStream reportStream = new MemoryStream();
+            MemoryStream reportStream = new();
             inputStream.CopyTo(reportStream);
             reportStream.Position = 0;
             inputStream.Close();
             reportOption.ReportModel.Stream = reportStream;
+            reportOption.ReportModel.DataSourceCredentials.Add(new BoldReports.Web.DataSourceCredentials("DataSource1", "db2297", "Sakib@123"));
         }
 
         // Method will be called when report is loaded internally to start to layout process with ReportHelper.

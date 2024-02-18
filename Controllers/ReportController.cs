@@ -31,15 +31,5 @@ namespace MPJBS.Controllers
             ViewBag.ReportFileName = reportParam.ReportFileName;
             return View(reportParam);
         }
-
-        public IActionResult FastCollectionHistory(ReportParamViewModel reportParam)
-        {
-            ViewBag.parameterSettings = new BoldReports.Models.ReportViewer.ParameterSettings();
-            var parameters = Utility.GenerateReportViewerParams(reportParam);
-            ViewBag.parameters = parameters;
-            reportParam.ReportFileName = "Collection.rdl";
-            ViewBag.ReportFileName = reportParam.ReportFileName;
-            return View(reportParam);
-        }
     }
 }

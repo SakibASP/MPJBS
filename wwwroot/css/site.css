@@ -23,7 +23,7 @@ body {
 
 #customA {
     text-decoration: none;
-    color: white;
+    color: black;
 }
 
 #customA:hover{
@@ -32,6 +32,7 @@ body {
 }
 
 .card {
+    padding-top: 5px;
     width: 100%; /* Allow the card to expand within its container */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -52,8 +53,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    margin: 0px;
+    padding-bottom: 10px;
 }
 
 #blackCard {
@@ -69,4 +69,10 @@ body {
 #greenCard {
     background-color: forestgreen !important;
     color: white !important;
+}
+
+#grayCard {
+    background-color: lightgrey !important;
+    color: black !important;
+    margin-bottom: 2px;
 }

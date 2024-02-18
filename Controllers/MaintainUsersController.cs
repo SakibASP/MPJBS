@@ -33,6 +33,7 @@ namespace MPJBS.Controllers
                 };
                 userRolesViewModel.Add(thisViewModel);
             }
+            if (!IsSuperAdmin) userRolesViewModel = userRolesViewModel.Where(x => !x.Roles!.Any(x=>x.ToLower() == "superadmin")).ToList();
             return View(userRolesViewModel);
         }
         private async Task<List<string>> GetUserRoles(ApplicationUser user)
@@ -50,7 +51,15 @@ namespace MPJBS.Controllers
             }
             ViewData["UserName"] = user.UserName;
             var model = new List<ManageUserRolesViewModel>();
-            foreach (var role in _roleManager.Roles.ToList())
+            var roles = new List<IdentityRole>();
+
+            //adding all roles to superadmin but not to others
+            if(IsSuperAdmin) 
+                roles = await _roleManager.Roles.ToListAsync();
+            else 
+                roles = await _roleManager.Roles.Where(x=>x.Name!.ToLower() != "superadmin").ToListAsync();
+            
+            foreach (var role in roles)
             {
                 var userRolesViewModel = new ManageUserRolesViewModel
                 {

@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\FastReports\" />
+    <Folder Include="wwwroot\RDL_Reports\" />
     <Folder Include="wwwroot\WorkImages\" />
   </ItemGroup>
 
